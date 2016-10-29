@@ -59,7 +59,7 @@ get "/region/:oblast_id/markets/:query" do
   ids_array = database["SELECT id from activities WHERE name LIKE '#{params[:query]}%'"].to_a
   ids = []
   ids_array.each { |id| ids << id[:id] }
-  database["SELECT COUNT(*) as companies_count, SUM(oblast_id) as oblast_sum FROM companies WHERE activities @> '{#{ids.join(',')}}'::int[] #{"AND oblast_id = #{params[:oblast_id]}" if params[:oblast_id].to_i != 0}"].to_a.to_json
+  database["SELECT COUNT(*) as companies_count, SUM(revenue) as revenue_sum, SUM(profit) as profit_sum FROM companies WHERE activities @> '{#{ids.join(',')}}'::int[] #{"AND oblast_id = #{params[:oblast_id]}" if params[:oblast_id].to_i != 0}"].to_a.to_json
 end
 
 get "/companies/:company_id" do
